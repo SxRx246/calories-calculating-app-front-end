@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import DeleteButton from './DeleteButton/DeleteButton'
 
 const FoodList = () => {
     const [foods, setFood] = useState([])
@@ -32,10 +33,15 @@ const FoodList = () => {
                     foods.length
                         ?
 
-                        foods.map((food) => {
+                        foods.map((food, index) => {
                             return (
                                 <div className='card' key={food._id}>
-                                    <p style={{ display: 'inline' }}>{food.name}</p>
+
+                                    <p style={{ display: 'inline' }}>{index+1}</p> <br/>
+                                    <p style={{ display: 'inline' }}>Name: {food.name}</p><br/>
+                                    <p style={{ display: 'inline' }}>Picture{food.picture}</p>
+                                    < DeleteButton />
+                                    {/* <p style={{ display: 'inline' }}>{food.name}</p> */}
 
                                 </div>
                             )
