@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
-import { createFood } from "../../services/foodService";
-
-=======
 import { createFood } from "../../services/foodService"
->>>>>>> dc9b610e0f57d991cb446e8148973b069f7ebd15
 
 const FoodForm = () => {
   const [formData, setFormData] = useState({
