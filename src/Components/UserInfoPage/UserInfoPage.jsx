@@ -10,6 +10,11 @@ const activityMultipliers = {
     super_active: 1.9
 }
 
+const convertToMetric = (value,unit,type) => {
+    if (type === "weight" && unit === "lb") return value * 0.453592
+    if (type === "hight" && unit === "ft") return value * 30.48
+    return value
+}
 
 const UserInfoPage = () => {
     return (
