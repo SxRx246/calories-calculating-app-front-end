@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import DeleteButton from './DeleteButton/DeleteButton'
 import UpdateButton from './UpdateButton/UpdateButton'
 
-const FoodList = ({setIsFormUpdated , isFormUpdated }) => {
+const FoodList = ({setIsFormUpdated , isFormUpdated , setSelectedFood}) => {
     const [foods, setFood] = useState([])
 
     const baseURL = import.meta.env.VITE_BACK_END_SERVER_URL
@@ -43,7 +43,7 @@ console.log("Current foods:", foods);
                                     <p>Name: {food.name}</p>
                                     <p>Calories: {food.calories}</p>
                                     < DeleteButton allFoods={allFoods} id={food._id}/>
-                                    < UpdateButton allFoods={allFoods} food={food} setIsFormUpdated={setIsFormUpdated}/>
+                                    < UpdateButton allFoods={allFoods} food={food} setIsFormUpdated={setIsFormUpdated} setSelectedFood={setSelectedFood}/>
                                 </div>
                             )
                         })

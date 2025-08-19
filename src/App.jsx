@@ -7,6 +7,7 @@ import UpdateFoodForm from "./Components/UpdateFoodForm/UpdateFoodForm"
 const App = () => {
   const [formIsShown, setFormIsShown] = useState(false)
   const [isFormUpdated , setIsFormUpdated] = useState(false)
+  const [selectedFood , setSelectedFood] = useState(null)
 
   const handleClick = () => {
     setFormIsShown(true)
@@ -19,11 +20,11 @@ const App = () => {
         :
         isFormUpdated
         ?
-        <UpdateFoodForm />
+        <UpdateFoodForm foodId={selectedFood._id}/>
         :
         <>
           <button onClick={handleClick}>Add Food</button>
-          <FoodList setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated}/>
+          <FoodList setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated} setSelectedFood={setSelectedFood}/>
         </>
       }
 
