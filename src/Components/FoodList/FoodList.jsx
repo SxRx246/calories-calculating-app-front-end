@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react'
 import DeleteButton from './DeleteButton/DeleteButton'
 import UpdateButton from './UpdateButton/UpdateButton'
 
-const FoodList = ({setIsFormUpdated , isFormUpdated , setSelectedFood}) => {
-    const [foods, setFood] = useState([])
+const FoodList = ({setIsFormUpdated , isFormUpdated , setSelectedFood, foods , setFood}) => {
 
     const baseURL = import.meta.env.VITE_BACK_END_SERVER_URL
     const allFoods = async () => {

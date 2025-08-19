@@ -8,6 +8,8 @@ const App = () => {
   const [formIsShown, setFormIsShown] = useState(false)
   const [isFormUpdated , setIsFormUpdated] = useState(false)
   const [selectedFood , setSelectedFood] = useState(null)
+  const [foods, setFood] = useState([])
+
 
   const handleClick = () => {
     setFormIsShown(true)
@@ -20,11 +22,11 @@ const App = () => {
         :
         isFormUpdated
         ?
-        <UpdateFoodForm foodId={selectedFood._id}/>
+        <UpdateFoodForm foodId={selectedFood._id} setIsFormUpdated={setIsFormUpdated}/>
         :
         <>
           <button onClick={handleClick}>Add Food</button>
-          <FoodList setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated} setSelectedFood={setSelectedFood}/>
+          <FoodList setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated} setSelectedFood={setSelectedFood} foods={foods} setFood={setFood}/>
         </>
       }
 
