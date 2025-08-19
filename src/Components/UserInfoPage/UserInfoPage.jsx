@@ -10,11 +10,28 @@ const activityMultipliers = {
     super_active: 1.9
 }
 
-const convertToMetric = (value,unit,type) => {
+const convertToMetric = (value, unit, type) => {
     if (type === "weight" && unit === "lb") return value * 0.453592
     if (type === "hight" && unit === "ft") return value * 30.48
     return value
 }
+
+const calculateCalories = ({ age, gender, height, weight, activityLevel }) => {
+    const weightKg = convertToMetric(weight.value, weight.unit, "weight")
+    const heightCm = convertToMetric(height.value, height.unit, "height")
+    const ageNum = Number(age)
+
+    let BMR = 0
+    if (gender === "male") {
+        BMR = 10 * weightKg + 6.25 * heightCm - 5 * ageNum + 5
+    } else {
+        BMR = 10 * weightKg + 6.25 * heightCm - 5 * ageNum - 161
+    }
+
+    const multiplier = activityMultipliers[activityLevel] || 1.2
+    return Math.round(BMR * multiplier)
+}
+
 
 const UserInfoPage = () => {
     return (
