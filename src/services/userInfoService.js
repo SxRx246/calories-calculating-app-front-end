@@ -27,7 +27,20 @@ const updateUserInfo = async (id, data) => {
 }
 
 
+const getUserInfoDetails = async (id,data) => {
+    try {
+        const url = `${BASE_URL}/user-info/${id}`
+        const response = await axios.get(url, data)
+        return response
+    }
+    catch (error) {
+        return error
+    }
+}
+
+
 export {
     createUserInfo,
-    updateUserInfo
+    updateUserInfo,
+    getUserInfoDetails
 }
