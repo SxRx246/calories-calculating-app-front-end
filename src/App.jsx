@@ -1,10 +1,12 @@
 import { useState } from "react";
 import FoodList from "./Components/FoodList/FoodList"
-import FoodForm from "./Components/FoodForm/FoodForm";
+import FoodForm from "./Components/FoodForm/FoodForm"
+import UpdateFoodForm from "./Components/UpdateFoodForm/UpdateFoodForm"
+
 
 const App = () => {
   const [formIsShown, setFormIsShown] = useState(false)
-
+  const [isFormUpdated , setIsFormUpdated] = useState(false)
 
   const handleClick = () => {
     setFormIsShown(true)
@@ -13,11 +15,15 @@ const App = () => {
     <>
       {formIsShown
         ?
-        <FoodForm />
+        <FoodForm setFormIsShown ={setFormIsShown}/>
+        :
+        isFormUpdated
+        ?
+        <UpdateFoodForm />
         :
         <>
           <button onClick={handleClick}>Add Food</button>
-          <FoodList />
+          <FoodList setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated}/>
         </>
       }
 
