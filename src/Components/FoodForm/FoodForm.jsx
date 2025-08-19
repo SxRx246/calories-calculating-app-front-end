@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createFood } from "../../services/foodService"
 
-const FoodForm = () => {
+const FoodForm = ({setFormIsShown}) => {
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -29,6 +29,7 @@ const FoodForm = () => {
     } catch (error) {
       console.log(error)
     }
+    setFormIsShown(false)
   }
 
 

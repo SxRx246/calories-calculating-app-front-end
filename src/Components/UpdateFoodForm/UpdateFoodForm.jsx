@@ -4,7 +4,7 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BACK_END_SERVER_URL;
 
-const UpdateFoodForm = ({ foodId }) => {
+const UpdateFoodForm = ({ foodId,setIsFormUpdated }) => {
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -27,7 +27,7 @@ const UpdateFoodForm = ({ foodId }) => {
           serving_qty: food.serving_qty || "",
           serving_size: food.serving_size || "",
           calories: food.calories || "",
-          picture: null 
+          picture: null
         })
       } catch (error) {
         console.error("Error fetching food:", error);
@@ -42,17 +42,23 @@ const UpdateFoodForm = ({ foodId }) => {
     setFormData({ ...formData, [event.target.name]: event.target.value })
   };
 
- 
+
   const handleFileChange = (event) => {
     setFormData({ ...formData, picture: event.target.files[0] });
   };
 
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await updateFood(foodId, formData);
-      console.log("Food updated:", response.data);
+      
+      if (response.status === 200) {
+        setIsFormUpdated(false)
+        console.log("Food updated:", response.data);
+      } else {
+        console.error("Failed to update:", response);
+      }
     } catch (error) {
       console.error("Error updating food:", error);
     }
