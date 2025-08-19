@@ -1,7 +1,9 @@
-import React, { useState } from "react"
-import { createUserInfo } from "../../services/userInfoService"
+import React, { useState, useEffect } from "react";
+import { updateUserInfo } from "../../services/userInfoService";
 
-const UserInfoForm = () => {
+const BASE_URL = import.meta.env.VITE_BACK_END_SERVER_URL;
+
+const UpdateUserInfoForm = () => {
   const [formData, setFormData] = useState({
     age: "",
     gender: "",
@@ -17,8 +19,7 @@ const UserInfoForm = () => {
 
  
   const handleNestedChange = (event, field) => {
-    setFormData({...formData,[field]: {
-        ...formData[field],
+    setFormData({...formData,[field]: {...formData[field],
         [event.target.name]: event.target.value
       }
     })
@@ -28,12 +29,13 @@ const UserInfoForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await createUserInfo(formData)
-      console.log("User info saved:", response.data)
+      const response = await updateUserInfo(formData)
+      console.log("User info saved:", response.data);
     } catch (error) {
-      console.error("Error saving user info:", error)
+      console.log(error);
     }
   }
+
 
 
   return (
@@ -117,4 +119,4 @@ const UserInfoForm = () => {
   );
 };
 
-export default UserInfoForm;
+export default UpdateUserInfoForm
