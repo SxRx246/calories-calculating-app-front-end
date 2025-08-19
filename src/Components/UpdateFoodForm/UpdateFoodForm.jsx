@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-<<<<<<< HEAD
-import { createFood } from "../../services/foodService";
+import React, { useState, useEffect } from "react";
+import { updateFood } from "../../services/foodService";
+import axios from "axios";
 
-=======
-import { createFood } from "../../services/foodService"
->>>>>>> dc9b610e0f57d991cb446e8148973b069f7ebd15
+const BASE_URL = import.meta.env.VITE_BACK_END_SERVER_URL;
 
-const FoodForm = () => {
+const UpdateFoodForm = ({ foodId }) => {
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -17,32 +15,54 @@ const FoodForm = () => {
   })
 
 
+  useEffect(() => {
+    const fetchFood = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/foods/${foodId}`);
+        const food = response.data;
+
+        setFormData({
+          name: food.name || "",
+          category: food.category || "",
+          serving_qty: food.serving_qty || "",
+          serving_size: food.serving_size || "",
+          calories: food.calories || "",
+          picture: null 
+        })
+      } catch (error) {
+        console.error("Error fetching food:", error);
+      }
+    };
+
+    fetchFood()
+  }, [foodId])
+
+
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value })
-  }
+  };
 
+ 
   const handleFileChange = (event) => {
-    setFormData({ ...formData, picture: event.target.files[0] })
-  }
+    setFormData({ ...formData, picture: event.target.files[0] });
+  };
 
-
-   const handleSubmit = async (event) => {
-    event.preventDefault()
-    try { 
-      const response = await createFood(formData)
-      console.log("Food created:", response.data)
+  
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await updateFood(foodId, formData);
+      console.log("Food updated:", response.data);
     } catch (error) {
-      console.log(error)
+      console.error("Error updating food:", error);
     }
-  }
-
+  };
 
   return (
     <div className="form">
-      <h1>Add New Food</h1>
+      <h1>Update Food</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Food Name</label>
-        <br />
+        <label htmlFor="name">Food Name</label><br />
         <input
           type="text"
           name="name"
@@ -50,12 +70,9 @@ const FoodForm = () => {
           onChange={handleChange}
           value={formData.name}
           required
-        />
-        <br />
+        /><br />
 
-
-        <label htmlFor="category">Category</label>
-        <br />
+        <label htmlFor="category">Category</label><br />
         <select
           name="category"
           id="category"
@@ -78,13 +95,9 @@ const FoodForm = () => {
           <option value="Soups & Sauces">Soups & Sauces</option>
           <option value="Fast Food / Restaurant Food">Fast Food / Restaurant Food</option>
           <option value="Branded Products">Branded Products</option>
+        </select><br />
 
-        </select>
-        <br />
-
-
-        <label htmlFor="serving_qty">Serving Quantity</label>
-        <br />
+        <label htmlFor="serving_qty">Serving Quantity</label><br />
         <input
           type="number"
           name="serving_qty"
@@ -92,12 +105,9 @@ const FoodForm = () => {
           onChange={handleChange}
           value={formData.serving_qty}
           required
-        />
-        <br />
+        /><br />
 
-
-        <label htmlFor="serving_size">Serving Size</label>
-        <br />
+        <label htmlFor="serving_size">Serving Size</label><br />
         <input
           type="number"
           name="serving_size"
@@ -105,11 +115,9 @@ const FoodForm = () => {
           onChange={handleChange}
           value={formData.serving_size}
           required
-        />
-        <br />
+        /><br />
 
-        <label htmlFor="calories">Calories</label>
-        <br />
+        <label htmlFor="calories">Calories</label><br />
         <input
           type="number"
           name="calories"
@@ -117,25 +125,21 @@ const FoodForm = () => {
           onChange={handleChange}
           value={formData.calories}
           required
-        />
-        <br />
+        /><br />
 
-  
         <label htmlFor="picture">Picture</label><br />
         <input
           type="file"
           name="picture"
           id="picture"
           accept="image/*"
-         onChange={handleFileChange}
+          onChange={handleFileChange}
         /><br />
 
-        <button id="SubmitButton" type="submit">
-          Submit
-        </button>
+        <button type="submit">Update</button>
       </form>
     </div>
   );
 };
 
-export default FoodForm;
+export default UpdateFoodForm;
