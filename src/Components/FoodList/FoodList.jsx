@@ -37,12 +37,10 @@ const FoodList = () => {
                             return (
                                 <div className='card' key={food._id}>
 
-                                    <p style={{ display: 'inline' }}>{index+1}</p> <br/>
-                                    <p style={{ display: 'inline' }}>Name: {food.name}</p><br/>
-                                    <p style={{ display: 'inline' }}>Picture{food.picture}</p>
-                                    < DeleteButton />
-                                    {/* <p style={{ display: 'inline' }}>{food.name}</p> */}
-
+                                    <p>{index+1}</p>
+                                    <p>Name: {food.name}</p>
+                                    <p>Calories: {food.calories}</p>
+                                    < DeleteButton allFoods={allFoods} id={food._id}/>
                                 </div>
                             )
                         })

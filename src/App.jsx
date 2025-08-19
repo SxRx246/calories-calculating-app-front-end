@@ -1,7 +1,6 @@
 import { useState } from "react";
-
-import FoodList from "./Components/FoodList/FoodList";
-import FoodForm from "./Components/FoodForm/FoodForm"
+import FoodList from "./Components/FoodList/FoodList"
+import FoodForm from "./Components/FoodForm/FoodForm";
 
 const App = () => {
   const [formIsShown, setFormIsShown] = useState(false)
@@ -21,9 +20,12 @@ const App = () => {
           <FoodList />
         </>
       }
+
     </>
 
   )
+
+
 }
 
 export default App
