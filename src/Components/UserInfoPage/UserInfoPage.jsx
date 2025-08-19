@@ -34,6 +34,27 @@ const calculateCalories = ({ age, gender, height, weight, activityLevel }) => {
 
 
 const UserInfoPage = () => {
+    const [userInfo, setUserInfo] = useState(null)
+    const [calories, setCalories] = useState(null)
+
+    useEffect(() => {
+        fetchInfo = async () => {
+            try {
+                const response = await getUserInfoDetails()
+
+                setUserInfo(response.data)
+                const calo = calculateCalories(response.data)
+                setCalories(calo)
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+        fetchInfo()
+    }, [])
+
+
+
     return (
         <div>
             <h1>User Info Summary</h1>
@@ -42,6 +63,10 @@ const UserInfoPage = () => {
             <p><strong>Height:</strong> {userInfo.height.value} {userInfo.height.unit}</p>
             <p><strong>Weight:</strong> {userInfo.weight.value} {userInfo.weight.unit}</p>
             <p><strong>Activity Level:</strong> {userInfo.activityLevel}</p>
+
+            <hr />
+            <h2>Required Daily Calories:</h2>
+            <p><strong>{calories} kcal/day</strong></p>
         </div>
     )
 }
