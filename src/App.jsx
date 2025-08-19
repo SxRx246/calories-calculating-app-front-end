@@ -1,15 +1,41 @@
-import { useState } from 'react'
-import './App.css'
-import FoodForm from './Components/FoodForm/FoodForm'
+import { useState } from "react";
+import FoodList from "./Components/FoodList/FoodList"
+import FoodForm from "./Components/FoodForm/FoodForm"
+import UpdateFoodForm from "./Components/UpdateFoodForm/UpdateFoodForm"
+
 
 const App = () => {
+  const [formIsShown, setFormIsShown] = useState(false)
+  const [isFormUpdated , setIsFormUpdated] = useState(false)
+  const [selectedFood , setSelectedFood] = useState(null)
+  const [foods, setFood] = useState([])
+
+
+  const handleClick = () => {
+    setFormIsShown(true)
+  }
   return (
     <>
-      <FoodForm />
+      {formIsShown
+        ?
+        <FoodForm setFormIsShown ={setFormIsShown}/>
+        :
+        isFormUpdated
+        ?
+        <UpdateFoodForm foodId={selectedFood._id} setIsFormUpdated={setIsFormUpdated}/>
+        :
+        <>
+          <button onClick={handleClick}>Add Food</button>
+          <FoodList setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated} setSelectedFood={setSelectedFood} foods={foods} setFood={setFood}/>
+        </>
+      }
+
     </>
+
   )
 
 
 }
 
 export default App
+
