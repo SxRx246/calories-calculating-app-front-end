@@ -1,20 +1,22 @@
-import axios from "axios"
-import { deleteFood } from "../../../services/foodService"
-
+import axios from 'axios';
 
 const DeleteButton = ({ id, allFoods }) => {
-    const handleDelete = async () => {
-        const response = await deleteFood(id)
-        console.log("Delete response:", response);
-        if (response.status === 200) {
-            allFoods(); // Refresh the list if the delete was successful
-        } else {
-            console.error("Failed to delete:", response);
-        }
-    }
-    return (
-        <button onClick={handleDelete}>Delete</button>
-    )
-}
+  const baseURL = import.meta.env.VITE_BACK_END_SERVER_URL;
 
-export default DeleteButton
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`${baseURL}/foods/${id}`);
+      allFoods();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <button onClick={handleDelete} className="delete-btn">
+      Delete
+    </button>
+  );
+};
+
+export default DeleteButton;

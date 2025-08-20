@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { createFood } from "../../services/foodService";
+import { useNavigate } from "react-router"
 
-
-const FoodForm = ({setFormIsShown}) => {
+const FoodForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -10,29 +10,28 @@ const FoodForm = ({setFormIsShown}) => {
     serving_size: "",
     calories: "",
     picture: null
-  })
+  });
 
+  const navigate = useNavigate(); 
 
   const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value })
-  }
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
 
   const handleFileChange = (event) => {
-    setFormData({ ...formData, picture: event.target.files[0] })
-  }
+    setFormData({ ...formData, picture: event.target.files[0] });
+  };
 
-
-   const handleSubmit = async (event) => {
-    event.preventDefault()
-    try { 
-      const response = await createFood(formData)
-      console.log("Food created:", response.data)
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await createFood(formData);
+      console.log("Food created:", response.data);
+      navigate('/foods');  
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-    setFormIsShown(false)
-  }
-
+  };
 
   return (
     <div className="form">
@@ -49,7 +48,6 @@ const FoodForm = ({setFormIsShown}) => {
           required
         />
         <br />
-
 
         <label htmlFor="category">Category</label>
         <br />
@@ -75,10 +73,8 @@ const FoodForm = ({setFormIsShown}) => {
           <option value="Soups & Sauces">Soups & Sauces</option>
           <option value="Fast Food / Restaurant Food">Fast Food / Restaurant Food</option>
           <option value="Branded Products">Branded Products</option>
-
         </select>
         <br />
-
 
         <label htmlFor="serving_qty">Serving Quantity</label>
         <br />
@@ -91,7 +87,6 @@ const FoodForm = ({setFormIsShown}) => {
           required
         />
         <br />
-
 
         <label htmlFor="serving_size">Serving Size</label>
         <br />
@@ -117,14 +112,13 @@ const FoodForm = ({setFormIsShown}) => {
         />
         <br />
 
-  
         <label htmlFor="picture">Picture</label><br />
         <input
           type="file"
           name="picture"
           id="picture"
           accept="image/*"
-         onChange={handleFileChange}
+          onChange={handleFileChange}
         /><br />
 
         <button id="SubmitButton" type="submit">
