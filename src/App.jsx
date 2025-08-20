@@ -68,7 +68,7 @@ const App = () => {
                       :
                       <>
                         <button onClick={handleClick}>Add Food</button>
-                        <FoodList setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated} setSelectedFood={setSelectedFood} foods={foods} setFood={setFood} />
+                        <FoodList setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated} setSelectedFood={setSelectedFood} foods={foods} setFood={setFood} userId={tokenId}/>
                       </>
                   }
 
