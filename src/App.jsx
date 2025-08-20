@@ -14,7 +14,8 @@ import NavBar from './Components/NavBar/NavBar';
 import UserInfoForm from './Components/UserInfoForm/UserInfoForm';
 import UserInfoPage from './Components/UserInfoPage/UserInfoPage';
 import UpdateUserInfoForm from './Components/UpdateUserInfoForm/UpdateUserInfoForm';
-
+import Footer from './Components/Footer/Footer';
+import Logo from './Components/Logo/Logo'; 
 
 const App = () => {
   const [formIsShown, setFormIsShown] = useState(false);
