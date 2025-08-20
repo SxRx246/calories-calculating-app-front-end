@@ -49,10 +49,14 @@ const App = () => {
 
   const handleAddFood = async (foodId, quantity) => {
     try {
+      if (!tokenId) {
+        console.error("User ID (tokenId) is missing");
+        return;
+      }
       const res = await axios.post(`${import.meta.env.VITE_BACK_END_SERVER_URL}/foods-per-day/add`, {
         foodId,
         quantity,
-        userId: tokenId 
+        userId: tokenId
       });
       console.log("Updated log:", res.data);
     } catch (error) {
