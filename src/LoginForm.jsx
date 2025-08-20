@@ -16,6 +16,7 @@ function LoginForm({ onLogin }) {
         password
       })
       localStorage.setItem('token', res.data.token)
+      
       onLogin(res.data.token)
       navigate('/foods')
     } catch (err) {

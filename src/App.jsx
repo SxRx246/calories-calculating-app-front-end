@@ -3,12 +3,15 @@ import { useState, useEffect } from "react";
 import FoodList from "./Components/FoodList/FoodList"
 import FoodForm from "./Components/FoodForm/FoodForm"
 import UpdateFoodForm from "./Components/UpdateFoodForm/UpdateFoodForm"
+import FoodPerDay from "./Components/FoodPerDayList/FoodPerDayList"
 import { BrowserRouter as Router, Routes, Route } from 'react-router'
 import LoginForm from './LoginForm'
 import SignUp from './SignupForm'
 import LogoutButton from './LogoutButton'
 import Home from './Home'
 import ProtectedRoute from './ProtectedRoutes'
+import axios from 'axios';
+
 
 const App = () => {
   const [formIsShown, setFormIsShown] = useState(false)
@@ -17,6 +20,9 @@ const App = () => {
   const [foods, setFood] = useState([])
   const [token, setToken] = useState(localStorage.getItem('token'))
   const [tokenId, setTokenId] = useState("")
+  const [todaysFood, setTodaysFood] = useState([])
+  const [addSuccessMessage, setAddSuccessMessage] = useState("");
+
 
   function handleLogin(newToken) {
     setToken(newToken)
@@ -33,19 +39,45 @@ const App = () => {
   useEffect(() => {
     if (token) {
       const decodedToken = jwtDecode(token);
-      setTokenId(decodedToken._id);
+      console.log(decodedToken);
+      setTokenId(decodedToken.id);
     }
-  }, [token]); 
+  }, [token]);
 
 
   const handleClick = () => {
     setFormIsShown(true)
   }
+
+  const handleAddFood = async (foodId, quantity, foodName) => {
+    try {
+      if (!tokenId) {
+        console.error("User ID (tokenId) is missing");
+        return;
+      }
+      const res = await axios.post(`${import.meta.env.VITE_BACK_END_SERVER_URL}/foods-per-day/add`, {
+        foodId,
+        quantity,
+        userId: tokenId
+      });
+      setAddSuccessMessage(`${foodName} has been added to your Today's List!`);
+      console.log("Updated log:", res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  console.log("The token id in the app", tokenId)
   return (
 
     <Router>
       <div>
         {token ? <LogoutButton onLogout={handleLogout} /> : null}
+        {addSuccessMessage && (
+          <div style={{ backgroundColor: "#d4edda", color: "#155724", padding: "10px", borderRadius: "4px", marginBottom: "1rem" }}>
+            {addSuccessMessage}
+          </div>
+        )}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
@@ -57,19 +89,27 @@ const App = () => {
                 <>
                   {formIsShown
                     ?
-                    <FoodForm setFormIsShown={setFormIsShown} />
+                    <FoodForm setFormIsShown={setFormIsShown} userId={tokenId} />
                     :
                     isFormUpdated
                       ?
                       <UpdateFoodForm foodId={selectedFood._id} setIsFormUpdated={setIsFormUpdated} />
                       :
                       <>
-                        <button onClick={handleClick}>Add Food</button>
-                        <FoodList setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated} setSelectedFood={setSelectedFood} foods={foods} setFood={setFood} />
+                        <button onClick={handleClick}>Add New Food</button>
+                        <FoodList setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated} setSelectedFood={setSelectedFood} foods={foods} setFood={setFood} userId={tokenId} handleAddFood={handleAddFood} />
                       </>
                   }
 
                 </>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/foods-per-day"
+            element={
+              <ProtectedRoute>
+                <FoodPerDay tokenId={tokenId} todaysFood={todaysFood} />
               </ProtectedRoute>
             }
           />
