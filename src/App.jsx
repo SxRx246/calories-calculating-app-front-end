@@ -10,6 +10,7 @@ import SignUp from './SignupForm'
 import LogoutButton from './LogoutButton'
 import Home from './Home'
 import ProtectedRoute from './ProtectedRoutes'
+import axios from 'axios';
 
 const App = () => {
   const [formIsShown, setFormIsShown] = useState(false)
@@ -18,7 +19,8 @@ const App = () => {
   const [foods, setFood] = useState([])
   const [token, setToken] = useState(localStorage.getItem('token'))
   const [tokenId, setTokenId] = useState("")
-  
+  const [todaysFood, setTodaysFood] = useState([])
+
 
   function handleLogin(newToken) {
     setToken(newToken)
@@ -44,6 +46,21 @@ const App = () => {
   const handleClick = () => {
     setFormIsShown(true)
   }
+
+  const handleAddFood = async (foodId, quantity) => {
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BACK_END_SERVER_URL}/foods-per-day/add`, {
+        foodId,
+        quantity,
+        userId: tokenId 
+      });
+      console.log("Updated log:", res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  console.log("The token id in the app", tokenId)
   return (
 
     <Router>
@@ -60,15 +77,15 @@ const App = () => {
                 <>
                   {formIsShown
                     ?
-                    <FoodForm setFormIsShown={setFormIsShown} userId={tokenId}/>
+                    <FoodForm setFormIsShown={setFormIsShown} userId={tokenId} />
                     :
                     isFormUpdated
                       ?
                       <UpdateFoodForm foodId={selectedFood._id} setIsFormUpdated={setIsFormUpdated} />
                       :
                       <>
-                        <button onClick={handleClick}>Add Food</button>
-                        <FoodList setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated} setSelectedFood={setSelectedFood} foods={foods} setFood={setFood} userId={tokenId}/>
+                        <button onClick={handleClick}>Add New Food</button>
+                        <FoodList setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated} setSelectedFood={setSelectedFood} foods={foods} setFood={setFood} userId={tokenId} handleAddFood={handleAddFood} />
                       </>
                   }
 
@@ -80,7 +97,7 @@ const App = () => {
             path="/foods-per-day"
             element={
               <ProtectedRoute>
-                <FoodPerDay tokenId={tokenId} />
+                <FoodPerDay tokenId={tokenId} todaysFood={todaysFood} />
               </ProtectedRoute>
             }
           />
