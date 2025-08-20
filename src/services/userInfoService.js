@@ -5,17 +5,20 @@ const BASE_URL = import.meta.env.VITE_BACK_END_SERVER_URL
 
 const createUserInfo = async (data) => {
   try {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     const url = `${BASE_URL}/user-info/new`
+
     const response = await axios.post(url, data, {
-         headers: { Authorization: `Bearer ${token}` }
-    }
-)
+      headers: { Authorization: `Bearer ${token}` }
+    })
+
     return response
   } catch (error) {
+    console.log("createUserInfo error:", error)
     return error
   }
-}
+};
+
 
 
 
