@@ -17,6 +17,7 @@ const FoodPerDay = ({ tokenId }) => {
 
       try {
         const response = await axios.get(`${baseURL}/foods-per-day/${tokenId}`);
+        console.log('Foods received from backend:', response.data);
         setFoods(response.data.foods || []);
       } catch (err) {
         setError('Could not load today’s foods.');
