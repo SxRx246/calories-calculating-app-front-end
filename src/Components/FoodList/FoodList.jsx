@@ -69,7 +69,7 @@ const [quantities, setQuantities] = useState({});
                                         onChange={(e) => handleQuantityChange(food._id, Number(e.target.value))}
                                         style={{ width: "60px", marginRight: "10px" }}
                                     />
-                                    <button onClick={() => handleAddFood(food._id, quantities[food._id] || 1)}>
+                                    <button onClick={() => handleAddFood(food._id, quantities[food._id] || 1 , food.name)}>
                                         Add to Todays List
                                     </button>                                  {
                                         food.userId && food.userId._id === userId

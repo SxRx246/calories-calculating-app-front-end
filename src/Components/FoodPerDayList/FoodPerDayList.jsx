@@ -1,43 +1,60 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const FoodPerDay = ({ tokenId, todaysFood }) => {
-    console.log("The tokenId in the FoodPerDay page" , tokenId)
-    const [foodLog, setFoodLog] = useState([]);
-    const [foodId, setFoodId] = useState('');
-    const [quantity, setQuantity] = useState(1);
-    const [message, setMessage] = useState('');
+const FoodPerDay = ({ tokenId }) => {
+  const [foods, setFoods] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        fetchFoodLog();
-    }, []);
-    
-    const baseURL = import.meta.env.VITE_BACK_END_SERVER_URL
-    const fetchFoodLog = async () => {
-        try {
+  const baseURL = import.meta.env.VITE_BACK_END_SERVER_URL;
 
-            const response = await axios.get(`${baseURL}/foods-per-day/${tokenId}`);
-            setFoodLog(response.data.foods || []);
-        } catch (error) {
-            console.error('Error fetching food log:', error);
-        }
+  useEffect(() => {
+    if (!tokenId) return;
+
+    const getFoods = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await axios.get(`${baseURL}/foods-per-day/${tokenId}`);
+        setFoods(response.data.foods || []);
+      } catch (err) {
+        setError('Could not load today’s foods.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
 
+    getFoods();
+  }, [tokenId, baseURL]);
 
-    return (
-                   <div>
-                <h2>Selected Foods for the Day:</h2>
-                {todaysFood.length ? (
-                    todaysFood.map((food, index) => (
-                        <div key={index}>
-                            <p>{food.name} - Calories: {food.calories}</p>
-                        </div>
-                    ))
-                ) : (
-                    <p>No foods selected yet.</p>
-                )}
-            </div>
-    );
+  const totalCalories = foods.reduce((sum, item) => {
+    return sum + (item.food?.calories || 0) * item.quantity;
+  }, 0);
+
+  if (loading) return <p>Loading today’s foods...</p>;
+  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+
+  return (
+    <div>
+      <h2>Foods Added Today:</h2>
+      {foods.length > 0 ? (
+        <>
+          <ul>
+            {foods.map(({ food, quantity }, i) => (
+              <li key={i}>
+                {food?.name || 'Unknown'} — Quantity: {quantity} — Calories per serving: {food?.calories || 0}
+              </li>
+            ))}
+          </ul>
+          <h3>Total Calories: {totalCalories}</h3>
+        </>
+      ) : (
+        <p>No foods added yet.</p>
+      )}
+    </div>
+  );
 };
 
 export default FoodPerDay;

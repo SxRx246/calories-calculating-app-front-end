@@ -20,6 +20,7 @@ const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token'))
   const [tokenId, setTokenId] = useState("")
   const [todaysFood, setTodaysFood] = useState([])
+  const [addSuccessMessage, setAddSuccessMessage] = useState("");
 
 
   function handleLogin(newToken) {
@@ -47,7 +48,7 @@ const App = () => {
     setFormIsShown(true)
   }
 
-  const handleAddFood = async (foodId, quantity) => {
+  const handleAddFood = async (foodId, quantity, foodName) => {
     try {
       if (!tokenId) {
         console.error("User ID (tokenId) is missing");
@@ -58,6 +59,7 @@ const App = () => {
         quantity,
         userId: tokenId
       });
+      setAddSuccessMessage(`${foodName} has been added to your Today's List!`);
       console.log("Updated log:", res.data);
     } catch (error) {
       console.error(error);
@@ -70,6 +72,11 @@ const App = () => {
     <Router>
       <div>
         {token ? <LogoutButton onLogout={handleLogout} /> : null}
+        {addSuccessMessage && (
+          <div style={{ backgroundColor: "#d4edda", color: "#155724", padding: "10px", borderRadius: "4px", marginBottom: "1rem" }}>
+            {addSuccessMessage}
+          </div>
+        )}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
