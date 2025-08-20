@@ -36,7 +36,7 @@ const App = () => {
   useEffect(() => {
     if (token) {
       const decodedToken = jwtDecode(token);
-      console.log('Decoded token in App.js: ', decodedToken.id)
+      console.log('Decoded tpoken', decodedToken.id)
       setTokenId(decodedToken.id);
     }
   }, []);
@@ -87,7 +87,7 @@ const App = () => {
             path="/user-info/new"
             element={
               <ProtectedRoute>
-                <UserInfoForm tokenId={tokenId} test={'hello'}/>
+                <UserInfoForm tokenId={tokenId}/>
               </ProtectedRoute>
             }
             />
@@ -96,7 +96,7 @@ const App = () => {
             path="/user-info/:userId"
             element={
               <ProtectedRoute>
-                <UserInfoPage tokenId={tokenId}/>
+                <UserInfoPage tokenId={tokenId} test={'hello'}/>
               </ProtectedRoute>
             }
             />
