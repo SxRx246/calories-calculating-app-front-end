@@ -1,42 +1,274 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
+/* Global styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.app-container {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.foods-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Form styling */
+.form {
+  background: white;
   padding: 2rem;
-  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgb(0 0 0 / 0.1);
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.form h1 {
+  margin-bottom: 1.2rem;
+  color: #444;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.form label {
+  font-weight: 600;
+  margin-top: 1rem;
+  display: block;
+  margin-bottom: 0.3rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.form input,
+.form select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  font-size: 1rem;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  outline-offset: 2px;
+  outline-color: #007bff;
+  transition: border-color 0.3s ease;
+}
+
+.form input:focus,
+.form select:focus {
+  border-color: #007bff;
+}
+
+.form button {
+  margin-top: 1.5rem;
+  padding: 0.7rem 1.4rem;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: #28a745;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.form button:hover {
+  background-color: #1e7e34;
+}
+
+/* Card style for FoodList */
+.smallContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  justify-content: center;
 }
 
 .card {
-  padding: 2em;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
+  padding: 1rem;
+  width: 220px;
+  text-align: center;
+  transition: transform 0.2s ease;
 }
 
-.read-the-docs {
-  color: #888;
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  border-radius: 10px;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 0.8rem;
+}
+
+.card p {
+  font-weight: 600;
+  margin: 0.3rem 0;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  margin-right: 0.5rem;
+}
+
+.delete-btn:hover {
+  background-color: #a71d2a;
+}
+
+.edit-btn {
+  background-color: #ffc107;
+  color: black;
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover {
+  background-color: #e0a800;
+}
+
+
+/* LoginForm.css */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6; /* light gray */
+}
+
+.login-form {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.login-form h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.login-input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.login-input:focus {
+  border-color: #3b82f6; /* blue */
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+}
+
+.login-button {
+  width: 100%;
+  background-color: #3b82f6; /* blue */
+  color: white;
+  padding: 0.5rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.login-button:hover {
+  background-color: #2563eb; /* darker blue */
+}
+
+/* NavBar.css */
+
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: #2563eb; /* blue */
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #bfdbfe; /* lighter blue */
+}
+
+.nav-button {
+  background-color: #fbbf24; /* amber */
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #1e293b; /* dark slate */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.nav-button:hover {
+  background-color: #f59e0b; /* darker amber */
 }

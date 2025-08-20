@@ -1,15 +1,14 @@
-import React, { useState } from 'react'
+const UpdateButton = ({ food, setIsFormUpdated, setSelectedFood, className }) => {
+  const handleUpdate = () => {
+    setSelectedFood(food);
+    setIsFormUpdated(true);
+  };
 
-const UpdateButton = ({setIsFormUpdated, setSelectedFood, food}) => {
-    const handleUpdateButton = () => {
-        setIsFormUpdated(true) 
-        setSelectedFood(food)
-    }
   return (
-    <div>
-      <button onClick={handleUpdateButton}>Edit</button>
-    </div>
-  )
-}
+    <button onClick={handleUpdate} className={className}>
+      Edit
+    </button>
+  );
+};
 
-export default UpdateButton
+export default UpdateButton;
