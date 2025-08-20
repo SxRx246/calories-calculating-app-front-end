@@ -10,6 +10,11 @@ import LogoutButton from './LogoutButton';
 import Home from './Home';
 import ProtectedRoute from './ProtectedRoutes';
 import './App.css'
+import NavBar from './Components/NavBar/NavBar';
+import UserInfoForm from './Components/UserInfoForm/UserInfoForm';
+import UserInfoPage from './Components/UserInfoPage/UserInfoPage';
+import UpdateUserInfoForm from './Components/UpdateUserInfoForm/UpdateUserInfoForm';
+
 
 const App = () => {
   const [formIsShown, setFormIsShown] = useState(false);
@@ -17,7 +22,7 @@ const App = () => {
   const [selectedFood, setSelectedFood] = useState(null);
   const [foods, setFood] = useState([]);
   const [token, setToken] = useState(localStorage.getItem('token'));
-  const [tokenId, setTokenId] = useState("");
+  const [tokenId, setTokenId] = useState('');
 
   function handleLogin(newToken) {
     setToken(newToken);
@@ -31,9 +36,10 @@ const App = () => {
   useEffect(() => {
     if (token) {
       const decodedToken = jwtDecode(token);
-      setTokenId(decodedToken._id);
+      console.log('Decoded token in App.js: ', decodedToken.id)
+      setTokenId(decodedToken.id);
     }
-  }, [token]);
+  }, []);
 
   const handleClick = () => {
     setFormIsShown(true);
@@ -42,7 +48,7 @@ const App = () => {
   return (
     <Router>
       <div className="app-container">
-        {token && <LogoutButton onLogout={handleLogout} />}
+        {token && <NavBar onLogout={handleLogout} />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
@@ -77,6 +83,24 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/user-info/new"
+            element={
+              <ProtectedRoute>
+                <UserInfoForm tokenId={tokenId} test={'hello'}/>
+              </ProtectedRoute>
+            }
+            />
+            {console.log('Token ID in App: ', tokenId)}
+          <Route
+            path="/user-info/:userId"
+            element={
+              <ProtectedRoute>
+                <UserInfoPage tokenId={tokenId}/>
+              </ProtectedRoute>
+            }
+            />
+           <Route path="/user-info/:userId" element={<ProtectedRoute><UpdateUserInfoForm /></ProtectedRoute>} />
         </Routes>
       </div>
     </Router>

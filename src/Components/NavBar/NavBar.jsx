@@ -1,9 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router'
 import { useState, useEffect } from 'react'
-import { getUserInfoDetails } from '../services/userInfoService'
+import { getUserInfoDetails } from '../../services/userInfoService'
 
-
-const NavBar = () => {
+const NavBar = ({ onLogout }) => {  
   const navigate = useNavigate()
   const [hasUserInfo, setHasUserInfo] = useState(null)
 
@@ -21,9 +20,9 @@ const NavBar = () => {
 
   const handleUserInfoClick = () => {
     if (hasUserInfo) {
-      navigate('/user-info')
+      navigate('/user-info/:id')
     } else {
-      navigate('/user-info/create')
+      navigate('/user-info/new')
     }
   }
 
@@ -33,6 +32,9 @@ const NavBar = () => {
       <Link to="/foods" className="nav-link">Foods</Link>
       <button onClick={handleUserInfoClick} className="nav-button">
         User Info
+      </button>
+      <button onClick={onLogout} className="nav-button logout-button">
+        Logout
       </button>
     </nav>
   )

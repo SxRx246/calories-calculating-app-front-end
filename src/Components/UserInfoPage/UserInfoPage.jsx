@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { getUserInfoDetails } from '../../services/userInfoService'
+import { jwtDecode } from 'jwt-decode'
 
 const activityMultipliers = {
     sedentary: 1.2,
@@ -35,31 +36,37 @@ const calculateCalories = ({ age, gender, height, weight, activityLevel }) => {
 
 const handleEdit = () => {
     if (userInfo && userInfo._id) {
-        navigate(`/user-info/edit/${userInfo._id}`)
+        navigate(`/user-info/edit/${tokenId}`)
     }
 }
 
-const UserInfoPage = () => {
+const UserInfoPage = ({tokenId}) => {
+
+    const token = localStorage.getItem('token')
+    const decodedToken = jwtDecode(token)
+    console.log(decodedToken)
+   
     const navigate = useNavigate()
     const [userInfo, setUserInfo] = useState(null)
     const [calories, setCalories] = useState(null)
+    
+    const fetchInfo = async () => {
+        try {
+            const response = await getUserInfoDetails(tokenId)
+            console.log('This is the token id in user info page: ', tokenId)
+
+            setUserInfo(response.data)
+            const calo = calculateCalories(response.data)
+            setCalories(calo)
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
 
     useEffect(() => {
-        const fetchInfo = async () => {
-            try {
-                const response = await getUserInfoDetails()
-
-                setUserInfo(response.data)
-                const calo = calculateCalories(response.data)
-                setCalories(calo)
-            }
-            catch (error) {
-                console.log(error)
-            }
-        }
         fetchInfo()
     }, [])
-
 
 
     return (

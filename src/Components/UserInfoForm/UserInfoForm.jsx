@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { createUserInfo } from "../../services/userInfoService"
 
-const UserInfoForm = () => {
+const UserInfoForm = ({tokenId}) => {
   const [formData, setFormData] = useState({
     age: "",
     gender: "",
@@ -10,6 +10,7 @@ const UserInfoForm = () => {
     activityLevel: ""
   })
 
+  console.log('ID inside user Info Form: ', tokenId)
 
   const handleChange = (event) => {
     setFormData({...formData,[event.target.name]: event.target.value})
@@ -24,17 +25,39 @@ const UserInfoForm = () => {
     })
   }
 
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  const token = localStorage.getItem('token')
+  console.log(tokenId)
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await createUserInfo(formData)
-      console.log("User info saved:", response.data)
-    } catch (error) {
-      console.error("Error saving user info:", error)
-    }
+
+  if (!tokenId) {
+    alert("User ID not available. Please log in again.");
+    return;
   }
 
+  const dataToSend = {
+    ...formData,
+    userId: tokenId, // include the userId
+  };
+  console.log
+  try {
+    const response = await createUserInfo(dataToSend);
+    console.log("User info saved:", response.data);
+  } catch (error) {
+    console.error("Error saving user info:", error);
+  }
+}
+
+//   const handleSubmit = async (event) => {
+//     event.preventDefault();
+//     try {
+//       const response = await createUserInfo(formData)
+//       console.log("User info saved:", response.data)
+//     } catch (error) {
+//       console.error("Error saving user info:", error)
+//     }
+//   }
 
   return (
     <div className="form">
@@ -111,7 +134,8 @@ const UserInfoForm = () => {
           <option value="super_active">Super Active (intense training)</option>
         </select><br />
 
-        <button type="submit">Save Info</button>
+        {/* <button type="submit">Save Info</button> */}
+        <button type="submit" disabled={!tokenId}>Save Info</button>
       </form>
     </div>
   );
