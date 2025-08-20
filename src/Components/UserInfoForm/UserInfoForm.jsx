@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { createUserInfo } from "../../services/userInfoService"
+import { useNavigate } from "react-router";
 
 const UserInfoForm = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const UserInfoForm = () => {
     activityLevel: ""
   })
 
+   const navigate = useNavigate()
 
   const handleChange = (event) => {
     setFormData({...formData,[event.target.name]: event.target.value})
@@ -30,6 +32,7 @@ const UserInfoForm = () => {
     try {
       const response = await createUserInfo(formData)
       console.log("User info saved:", response.data)
+      navigate("/user-info/:id", { state: response.data })
     } catch (error) {
       console.error("Error saving user info:", error)
     }
