@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import FoodList from "./Components/FoodList/FoodList"
 import FoodForm from "./Components/FoodForm/FoodForm"
 import UpdateFoodForm from "./Components/UpdateFoodForm/UpdateFoodForm"
+import FoodPerDay from "./Components/FoodPerDayList/FoodPerDayList"
 import { BrowserRouter as Router, Routes, Route } from 'react-router'
 import LoginForm from './LoginForm'
 import SignUp from './SignupForm'
@@ -17,6 +18,7 @@ const App = () => {
   const [foods, setFood] = useState([])
   const [token, setToken] = useState(localStorage.getItem('token'))
   const [tokenId, setTokenId] = useState("")
+  
 
   function handleLogin(newToken) {
     setToken(newToken)
@@ -33,9 +35,10 @@ const App = () => {
   useEffect(() => {
     if (token) {
       const decodedToken = jwtDecode(token);
-      setTokenId(decodedToken._id);
+      console.log(decodedToken);
+      setTokenId(decodedToken.id);
     }
-  }, [token]); 
+  }, [token]);
 
 
   const handleClick = () => {
@@ -57,7 +60,7 @@ const App = () => {
                 <>
                   {formIsShown
                     ?
-                    <FoodForm setFormIsShown={setFormIsShown} />
+                    <FoodForm setFormIsShown={setFormIsShown} userId={tokenId}/>
                     :
                     isFormUpdated
                       ?
@@ -70,6 +73,14 @@ const App = () => {
                   }
 
                 </>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/foods-per-day"
+            element={
+              <ProtectedRoute>
+                <FoodPerDay tokenId={tokenId} />
               </ProtectedRoute>
             }
           />

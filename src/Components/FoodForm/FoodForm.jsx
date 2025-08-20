@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { createFood } from "../../services/foodService";
 
 
-const FoodForm = ({setFormIsShown}) => {
+const FoodForm = ({ setFormIsShown, userId }) => {
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -22,9 +22,17 @@ const FoodForm = ({setFormIsShown}) => {
   }
 
 
-   const handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    try { 
+    try {
+      const data = {
+        name: formData.name,
+        category: formData.category,
+        serving_qty: formData.serving_qty,
+        serving_size: formData.serving_size,
+        calories: formData.calories,
+        userId: userId // Include user ID directly
+      };
       const response = await createFood(formData)
       console.log("Food created:", response.data)
     } catch (error) {
@@ -117,14 +125,14 @@ const FoodForm = ({setFormIsShown}) => {
         />
         <br />
 
-  
+
         <label htmlFor="picture">Picture</label><br />
         <input
           type="file"
           name="picture"
           id="picture"
           accept="image/*"
-         onChange={handleFileChange}
+          onChange={handleFileChange}
         /><br />
 
         <button id="SubmitButton" type="submit">
