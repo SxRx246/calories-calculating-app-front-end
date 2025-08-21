@@ -88,7 +88,7 @@ const FoodForm = ({ setFormIsShown, userId }) => {
         <br />
 
 
-        <label htmlFor="serving_qty">Serving Quantity</label>
+        {/* <label htmlFor="serving_qty">Serving Quantity</label>
         <br />
         <input
           type="number"
@@ -98,7 +98,7 @@ const FoodForm = ({ setFormIsShown, userId }) => {
           value={formData.serving_qty}
           required
         />
-        <br />
+        <br /> */}
 
 
         <label htmlFor="serving_size">Serving Size</label>
