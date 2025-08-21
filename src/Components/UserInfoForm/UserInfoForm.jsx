@@ -14,6 +14,7 @@ const UserInfoForm = ({ tokenId }) => {
 
   const [message, setMessage] = useState("")
   const navigate = useNavigate();
+  console.log('ID inside user Info Form: ', tokenId)
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -152,7 +153,8 @@ const UserInfoForm = ({ tokenId }) => {
           <option value="super_active">Super Active (intense training)</option>
         </select><br />
 
-        <button type="submit">Save Info</button>
+        {/* <button type="submit">Save Info</button> */}
+        <button type="submit" disabled={!tokenId}>Save Info</button>
       </form>
       <Footer />
     </div>

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { getUserInfoDetails } from '../../services/userInfoService'
 import { jwtDecode } from 'jwt-decode'
@@ -9,67 +10,64 @@ const activityMultipliers = {
     moderately_active: 1.55,
     very_active: 1.725,
     super_active: 1.9
-};
+}
 
 const convertToMetric = (value, unit, type) => {
-    if (type === "weight" && unit === "lb") return value * 0.453592;
-    if (type === "height" && unit === "ft") return value * 30.48;
-    return value;
-};
+    if (type === "weight" && unit === "lb") return value * 0.453592
+    if (type === "hight" && unit === "ft") return value * 30.48
+    return value
+}
 
 const calculateCalories = ({ age, gender, height, weight, activityLevel }) => {
-    const weightKg = convertToMetric(weight.value, weight.unit, "weight");
-    const heightCm = convertToMetric(height.value, height.unit, "height");
-    const ageNum = Number(age);
+    const weightKg = convertToMetric(weight.value, weight.unit, "weight")
+    const heightCm = convertToMetric(height.value, height.unit, "height")
+    const ageNum = Number(age)
 
-    let BMR = gender === "male"
-        ? 10 * weightKg + 6.25 * heightCm - 5 * ageNum + 5
-        : 10 * weightKg + 6.25 * heightCm - 5 * ageNum - 161;
+    let BMR = 0
+    if (gender === "male") {
+        BMR = 10 * weightKg + 6.25 * heightCm - 5 * ageNum + 5
+    } else {
+        BMR = 10 * weightKg + 6.25 * heightCm - 5 * ageNum - 161
+    }
 
-    const multiplier = activityMultipliers[activityLevel] || 1.2;
-    return Math.round(BMR * multiplier);
-};
+    const multiplier = activityMultipliers[activityLevel] || 1.2
+    return Math.round(BMR * multiplier)
+}
 
-const UserInfoPage = ({ tokenId }) => {
-    const token = localStorage.getItem('token');
-    const decodedToken = jwtDecode(token);
-    const userId = decodedToken.userId || decodedToken._id || decodedToken.id;
+const handleEdit = () => {
+    if (userInfo && userInfo._id) {
+        navigate(`/user-info/edit/${tokenId}`)
+    }
+}
 
-    const navigate = useNavigate();
-    const [userInfo, setUserInfo] = useState(null);
-    const [calories, setCalories] = useState(null);
+const UserInfoPage = ({tokenId}) => {
+
+    const token = localStorage.getItem('token')
+    const decodedToken = jwtDecode(token)
+    console.log(decodedToken)
+   
+    const navigate = useNavigate()
+    const [userInfo, setUserInfo] = useState(null)
+    const [calories, setCalories] = useState(null)
+    
+    const fetchInfo = async () => {
+        try {
+            const response = await getUserInfoDetails(tokenId)
+            console.log('This is the token id in user info page: ', tokenId)
+
+            setUserInfo(response.data)
+            const calo = calculateCalories(response.data)
+            setCalories(calo)
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
 
     useEffect(() => {
-        const fetchInfo = async () => {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                console.log("No token found.");
-                navigate("/login");
-                return;
-            }
+        fetchInfo()
+    }, [])
 
-            try {
-                const decodedToken = jwtDecode(token);
-                const tokenId = decodedToken.id;
-                console.log("Decoded token:", decodedToken);
-                console.log("Token ID in component:", tokenId);
-
-                const response = await getUserInfoDetails(tokenId);
-                setUserInfo(response.data);
-
-                if (response.data) {
-                    const calo = calculateCalories(response.data);
-                    setCalories(calo);
-                }
-            } catch (error) {
-                console.log("Error fetching user info", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        fetchInfo();
-    }, []);
 
     return (
         <div>
@@ -86,7 +84,7 @@ const UserInfoPage = ({ tokenId }) => {
 
             <button onClick={handleEdit}>Edit Info</button>
         </div>
-    );
-};
+    )
+}
 
-export default UserInfoPage;
+export default UserInfoPage

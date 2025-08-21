@@ -27,7 +27,7 @@ const NavBar = ({ onLogout }) => {
 
   const handleUserInfoClick = () => {
     if (hasUserInfo) {
-      navigate('/user-info/:id') // You may want to dynamically replace :id
+      navigate('/user-info/:id')
     } else {
       navigate('/user-info/new')
     }
