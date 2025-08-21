@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import DeleteButton from './DeleteButton/DeleteButton'
 import UpdateButton from './UpdateButton/UpdateButton'
+import Footer from '../Footer/Footer'
 
 const FoodList = ({ setIsFormUpdated, isFormUpdated, setSelectedFood, foods, setFood, handleClick }) => {
 
@@ -67,7 +68,7 @@ const FoodList = ({ setIsFormUpdated, isFormUpdated, setSelectedFood, foods, set
 
                 }
             </div>
-
+            <Footer />
         </>
     )
 }

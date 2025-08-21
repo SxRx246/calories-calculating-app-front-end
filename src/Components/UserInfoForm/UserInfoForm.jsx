@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { createUserInfo } from "../../services/userInfoService";
 import { useNavigate } from "react-router";
+import Footer from "../Footer/Footer";
 
 const UserInfoForm = ({ tokenId }) => {
   const [formData, setFormData] = useState({
@@ -153,6 +154,7 @@ const UserInfoForm = ({ tokenId }) => {
 
         <button type="submit">Save Info</button>
       </form>
+      <Footer />
     </div>
   );
 };

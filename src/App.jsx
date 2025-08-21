@@ -4,8 +4,8 @@ import FoodList from "./Components/FoodList/FoodList";
 import FoodForm from "./Components/FoodForm/FoodForm";
 import UpdateFoodForm from "./Components/UpdateFoodForm/UpdateFoodForm";
 import { BrowserRouter as Router, Routes, Route } from 'react-router'
-import LoginForm from './LoginForm';
-import SignUp from './SignupForm';
+import LoginForm from './Components/Auth/LoginForm/LoginForm';
+import SignUp from './Components/Auth/Signupform/Signupform';
 import LogoutButton from './LogoutButton';
 import Home from './Home';
 import ProtectedRoute from './ProtectedRoutes';
@@ -34,13 +34,13 @@ const App = () => {
     localStorage.removeItem('token');
   }
 
-  useEffect(() => {
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      console.log('Decoded token in App.js:', decodedToken);
-      setTokenId(decodedToken.id);
-    }
-  }, [token]);
+useEffect(() => {
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    console.log("Decoded token in App.js:", decodedToken);
+    setTokenId(decodedToken.id);
+  }
+}, [token]);
 
   console.log('Token ID in App: ', tokenId);
 
@@ -50,8 +50,8 @@ const App = () => {
 
   return (
     <Router>
-      <div className="app-container">
         {token && <NavBar onLogout={handleLogout} />}
+        <div className="app-container">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
