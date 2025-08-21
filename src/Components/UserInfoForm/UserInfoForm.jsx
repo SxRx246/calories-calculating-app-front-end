@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { createUserInfo } from "../../services/userInfoService"
+import React, { useState, useEffect } from "react";
+import { createUserInfo } from "../../services/userInfoService";
 
 const UserInfoForm = () => {
   const [formData, setFormData] = useState({
@@ -8,39 +8,102 @@ const UserInfoForm = () => {
     height: { value: "", unit: "cm" },
     weight: { value: "", unit: "kg" },
     activityLevel: ""
-  })
+  });
 
+  const [calories, setCalories] = useState(null);
 
   const handleChange = (event) => {
-    setFormData({...formData,[event.target.name]: event.target.value})
-  }
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
 
- 
   const handleNestedChange = (event, field) => {
-    setFormData({...formData,[field]: {
+    setFormData({
+      ...formData,
+      [field]: {
         ...formData[field],
         [event.target.name]: event.target.value
       }
-    })
-  }
+    });
+  };
 
+ 
+  const heightInCm = () => {
+    const heightValue = parseFloat(formData.height.value);
+    if (isNaN(heightValue)) return 0;
+    if (formData.height.unit === "cm") return heightValue;
+    if (formData.height.unit === "ft") return heightValue * 30.48; // 1 ft = 30.48 cm
+    return 0;
+  };
+
+
+  const weightInKg = () => {
+    const weightValue = parseFloat(formData.weight.value);
+    if (isNaN(weightValue)) return 0;
+    if (formData.weight.unit === "kg") return weightValue;
+    if (formData.weight.unit === "lb") return weightValue * 0.453592; // 1 lb = 0.453592 kg
+    return 0;
+  };
+
+
+  const calculateBMR = () => {
+    const age = parseInt(formData.age);
+    const weight = weightInKg();
+    const height = heightInCm();
+    const gender = formData.gender;
+
+    if (!age || !weight || !height || !gender) return 0;
+
+    if (gender === "male") {
+      return 10 * weight + 6.25 * height - 5 * age + 5;
+    } else if (gender === "female") {
+      return 10 * weight + 6.25 * height - 5 * age - 161;
+    }
+    return 0;
+  };
+
+
+  const activityFactor = () => {
+    switch (formData.activityLevel) {
+      case "sedentary":
+        return 1.2;
+      case "lightly_active":
+        return 1.375;
+      case "moderately_active":
+        return 1.55;
+      case "very_active":
+        return 1.725;
+      case "super_active":
+        return 1.9;
+      default:
+        return 1;
+    }
+  };
+
+
+  useEffect(() => {
+    const bmr = calculateBMR();
+    if (bmr) {
+      const totalCalories = bmr * activityFactor();
+      setCalories(totalCalories.toFixed(0)); 
+    } else {
+      setCalories(null);
+    }
+  }, [formData]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await createUserInfo(formData)
-      console.log("User info saved:", response.data)
+      const response = await createUserInfo(formData);
+      console.log("User info saved:", response.data);
     } catch (error) {
-      console.error("Error saving user info:", error)
+      console.error("Error saving user info:", error);
     }
-  }
-
+  };
 
   return (
     <div className="form">
       <h1>User Information</h1>
       <form onSubmit={handleSubmit}>
-        
         <label>Age</label><br />
         <input
           type="number"
@@ -113,6 +176,12 @@ const UserInfoForm = () => {
 
         <button type="submit">Save Info</button>
       </form>
+
+      {calories && (
+        <div style={{ marginTop: "20px", fontWeight: "bold" }}>
+          Estimated Total Required Calories: {calories} kcal/day
+        </div>
+      )}
     </div>
   );
 };
