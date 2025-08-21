@@ -22,6 +22,7 @@ const App = () => {
   const [tokenId, setTokenId] = useState("")
   const [todaysFood, setTodaysFood] = useState([])
   const [addSuccessMessage, setAddSuccessMessage] = useState("");
+  const [addedFoodIds, setAddedFoodIds] = useState([]);
 
 
   function handleLogin(newToken) {
@@ -50,6 +51,15 @@ const App = () => {
   }
   const baseURL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`
 
+    const getTodaysFoods = async () => {
+        try {
+            const res = await axios.get(`${baseURL}/foods-per-day/${tokenId}`);
+            setTodaysFood(res.data.foods || []);
+        } catch (err) {
+            console.error("Error fetching today's foods:", err);
+        }
+    };
+
   const handleAddFood = async (foodId, quantity, foodName) => {
     try {
       if (!tokenId) {
@@ -62,7 +72,9 @@ const App = () => {
         quantity,
         userId: tokenId
       });
+      
       setAddSuccessMessage(`${foodName} has been added to your Today's List!`);
+      getTodaysFoods();
       console.log("Updated log:", res.data);
     } catch (error) {
       console.error(error);
@@ -71,7 +83,7 @@ const App = () => {
 
   const handleDelete = async (foodIdToDelete) => {
   try {
-    await axios.delete(`${baseURL}/foods-per-day/${tokenId}`, {
+    await axios.delete(`${baseURL}/foods-per-day/${tokenId}/food/${foodIdToDelete}`, {
       data: { foodId: foodIdToDelete },
     });
     // Refresh food list after deletion
@@ -112,7 +124,7 @@ const App = () => {
                       :
                       <>
                         <button onClick={handleClick}>Add New Food</button>
-                        <FoodList setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated} setSelectedFood={setSelectedFood} foods={foods} setFood={setFood} userId={tokenId} handleAddFood={handleAddFood} />
+                        <FoodList todaysFood={todaysFood} setIsFormUpdated={setIsFormUpdated} isFormUpdated={isFormUpdated} setSelectedFood={setSelectedFood} foods={foods} setFood={setFood} userId={tokenId} handleAddFood={handleAddFood} setAddedFoodIds={setAddedFoodIds} addedFoodIds={addedFoodIds} getTodaysFoods={getTodaysFoods}/>
                       </>
                   }
 

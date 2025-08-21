@@ -11,6 +11,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
 
 a {
@@ -65,4 +66,20 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.smallContainer {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping to next line if space runs out */
+  gap: 16px; /* Optional: space between cards */
+  justify-content: center; /* Optional: center cards horizontally */
+}
+
+.card {
+  width: 250px; /* Or whatever width works well for your layout */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: white;
 }

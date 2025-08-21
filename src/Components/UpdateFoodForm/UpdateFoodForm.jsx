@@ -15,25 +15,25 @@ const UpdateFoodForm = ({ foodId,setIsFormUpdated }) => {
   })
 
 
+  const fetchFood = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/foods/${foodId}`);
+      const food = response.data;
+
+      setFormData({
+        name: food.name || "",
+        category: food.category || "",
+        serving_qty: food.serving_qty || "",
+        serving_size: food.serving_size || "",
+        calories: food.calories || "",
+        picture: null
+      })
+    } catch (error) {
+      console.error("Error fetching food:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchFood = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/foods/${foodId}`);
-        const food = response.data;
-
-        setFormData({
-          name: food.name || "",
-          category: food.category || "",
-          serving_qty: food.serving_qty || "",
-          serving_size: food.serving_size || "",
-          calories: food.calories || "",
-          picture: null
-        })
-      } catch (error) {
-        console.error("Error fetching food:", error);
-      }
-    };
-
     fetchFood()
   }, [foodId])
 

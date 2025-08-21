@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react'
 import DeleteButton from './DeleteButton/DeleteButton'
 import UpdateButton from './UpdateButton/UpdateButton'
 
-const FoodList = ({ setIsFormUpdated, isFormUpdated, setSelectedFood, foods, setFood, userId, handleAddFood }) => {
-const [quantities, setQuantities] = useState({});
+const FoodList = ({ setIsFormUpdated, isFormUpdated, setSelectedFood, foods, setFood, userId, handleAddFood, todaysFood, getTodaysFoods }) => {
+    const [quantities, setQuantities] = useState({});
 
     const baseURL = import.meta.env.VITE_BACK_END_SERVER_URL
     const allFoods = async () => {
@@ -21,9 +21,22 @@ const [quantities, setQuantities] = useState({});
         }
     }
 
+
+
+    // useEffect(() => {
+    //     // allFoods()
+    //     getTodaysFoods()
+    // }, [])
+
     useEffect(() => {
-        allFoods()
-    }, [])
+        allFoods();
+    }, []);
+
+    useEffect(() => {
+        if (userId) {
+            getTodaysFoods();
+        }
+    }, [userId]);
 
     console.log("Current foods:", foods);
 
@@ -44,8 +57,15 @@ const [quantities, setQuantities] = useState({});
                     foods.length
                         ?
                         foods.map((food) => {
+                            const isInTodayList = todaysFood.some((item) => item.food._id === food._id);
                             return (
-                                <div className='card' key={food._id}>
+                                <div className='card' key={food._id}
+                                    style={{
+                                        backgroundColor: isInTodayList ? '#1074d2ff' : 'white',
+                                        opacity: isInTodayList ? 0.9 : 1,
+                                        transition: 'background-color 0.3s ease',
+                                    }}
+                                >
                                     {
                                         food.picture
                                             ?
@@ -62,16 +82,28 @@ const [quantities, setQuantities] = useState({});
 
                                     <p>{food.name}</p>
                                     <p>Calories Per Serving: {food.calories}</p>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        value={quantities[food._id] || 1}   // default to 1 if not set
-                                        onChange={(e) => handleQuantityChange(food._id, Number(e.target.value))}
-                                        style={{ width: "60px", marginRight: "10px" }}
-                                    />
-                                    <button onClick={() => handleAddFood(food._id, quantities[food._id] || 1 , food.name)}>
-                                        Add to Todays List
-                                    </button>                                  {
+
+                                    {
+                                        !isInTodayList
+                                            ?
+                                            <>
+                                                <input
+                                                    type="number"
+                                                    min="1"
+                                                    value={quantities[food._id] || 1}
+                                                    onChange={(event) => handleQuantityChange(food._id, Number(event.target.value))}
+                                                    style={{ width: "60px", marginRight: "10px" }}
+                                                />
+
+                                                <button onClick={() => handleAddFood(food._id, quantities[food._id] || 1, food.name)}>
+                                                    Add to Todays List
+                                                </button>
+                                            </>
+                                            :
+                                            null
+                                    }
+
+                                    {
                                         food.userId && food.userId._id === userId
                                             ?
                                             <>

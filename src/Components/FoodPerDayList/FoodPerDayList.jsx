@@ -7,28 +7,30 @@ const FoodPerDay = ({ tokenId , handleDelete }) => {
   const [error, setError] = useState(null);
 
   const baseURL = import.meta.env.VITE_BACK_END_SERVER_URL;
+const getFoodsPerDay = async () => {
+  try {
+    const url = `${baseURL}/foods-per-day/${tokenId}`;
+    const response = await axios.get(url);
+    console.log("Foods per day data:", response.data);
+    setFoods(response.data.foods || []);
+  } catch (error) {
+    console.error("Error fetching foods per day:", error);
+  }
+};
 
   useEffect(() => {
     if (!tokenId) return;
-
-    const getFoods = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const response = await axios.get(`${baseURL}/foods-per-day/${tokenId}`);
-        console.log('Foods received from backend:', response.data);
-        setFoods(response.data.foods || []);
-      } catch (err) {
-        setError('Could not load today’s foods.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getFoods();
+    getFoodsPerDay()
   }, [tokenId, baseURL]);
+
+    const deleteAndRefresh = async (foodId) => {
+    try {
+      await handleDelete(foodId);  // call parent's delete function
+      await getFoodsPerDay();          // refetch foods after delete
+    } catch (err) {
+      console.error("Failed to delete and refresh:", err);
+    }
+  };
 
   const totalCalories = foods.reduce((sum, item) => {
     return sum + (item.food?.calories || 0) * item.quantity;
@@ -46,7 +48,7 @@ const FoodPerDay = ({ tokenId , handleDelete }) => {
             {foods.map(({ food, quantity }, index) => (
               <li key={index}>
                 {food?.name || 'Unknown'} — Quantity: {quantity} — Calories per serving: {food?.calories || 0}
-                <button onClick={() => handleDelete(food._id)}>Delete</button>
+                <button onClick={() => deleteAndRefresh(food._id)}>Delete</button>
               </li>
             ))}
           </ul>
