@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import axios from 'axios'
+import '../Auth.css'
 
 function SignUp() {
   const [username, setUsername] = useState('')
@@ -22,21 +23,25 @@ function SignUp() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Sign Up</h2>
-      <input 
-        placeholder="Username"
-        value={username}
-        onChange={event => setUsername(event.target.value)}
-      />
-      <input 
-        placeholder="Password"
-        type="password"
-        value={password}
-        onChange={event => setPassword(event.target.value)}
-      />
-      <button type="submit">Sign Up</button>
-    </form>
+    <div className="login-container">
+      <form onSubmit={handleSubmit} className="login-form">
+        <h2>Sign Up</h2>
+        <input 
+          placeholder="Username"
+          className="login-input"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
+        />
+        <input 
+          placeholder="Password"
+          type="password"
+          className="login-input"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
+        <button type="submit" className="login-button">Sign Up</button>
+      </form>
+    </div>
   )
 }
 export default  SignUp
