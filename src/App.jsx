@@ -11,7 +11,14 @@ import LogoutButton from './LogoutButton'
 import Home from './Home'
 import ProtectedRoute from './ProtectedRoutes'
 import axios from 'axios';
-
+import ProtectedRoute from './ProtectedRoutes';
+import './App.css'
+import NavBar from './Components/NavBar/NavBar';
+import UserInfoForm from './Components/UserInfoForm/UserInfoForm';
+import UserInfoPage from './Components/UserInfoPage/UserInfoPage';
+import UpdateUserInfoForm from './Components/UpdateUserInfoForm/UpdateUserInfoForm';
+import Footer from './Components/Footer/Footer';
+import Logo from './Components/Logo/Logo'; 
 
 const App = () => {
   const [formIsShown, setFormIsShown] = useState(false)
@@ -71,8 +78,8 @@ const App = () => {
   return (
 
     <Router>
-      <div>
         {token ? <LogoutButton onLogout={handleLogout} /> : null}
+      <div className="app-container">
         {addSuccessMessage && (
           <div style={{ backgroundColor: "#d4edda", color: "#155724", padding: "10px", borderRadius: "4px", marginBottom: "1rem" }}>
             {addSuccessMessage}
@@ -86,7 +93,7 @@ const App = () => {
             path="/foods"
             element={
               <ProtectedRoute>
-                <>
+                <div className="foods-wrapper">
                   {formIsShown
                     ?
                     <FoodForm setFormIsShown={setFormIsShown} userId={tokenId} />
@@ -101,7 +108,7 @@ const App = () => {
                       </>
                   }
 
-                </>
+                </div>
               </ProtectedRoute>
             }
           />
@@ -113,6 +120,25 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+
+                    <Route
+            path="/user-info/new"
+            element={
+              <ProtectedRoute>
+                {tokenId ? <UserInfoForm tokenId={tokenId} /> : <div>Loading...</div>}
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/user-info/edit/:userId"
+            element={
+              <ProtectedRoute>
+                <UpdateUserInfoForm />
+              </ProtectedRoute>
+            }
+          />
+
         </Routes>
       </div>
     </Router>
