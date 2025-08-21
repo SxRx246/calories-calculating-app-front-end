@@ -48,6 +48,7 @@ const App = () => {
   const handleClick = () => {
     setFormIsShown(true)
   }
+  const baseURL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`
 
   const handleAddFood = async (foodId, quantity, foodName) => {
     try {
@@ -55,7 +56,8 @@ const App = () => {
         console.error("User ID (tokenId) is missing");
         return;
       }
-      const res = await axios.post(`${import.meta.env.VITE_BACK_END_SERVER_URL}/foods-per-day/add`, {
+
+      const res = await axios.post(`${baseURL}/foods-per-day/add`, {
         foodId,
         quantity,
         userId: tokenId
@@ -66,6 +68,19 @@ const App = () => {
       console.error(error);
     }
   };
+
+  const handleDelete = async (foodIdToDelete) => {
+  try {
+    await axios.delete(`${baseURL}/foods-per-day/${tokenId}`, {
+      data: { foodId: foodIdToDelete },
+    });
+    // Refresh food list after deletion
+    const response = await axios.get(`${baseURL}/foods-per-day/${tokenId}`);
+    setFood(response.data.foods || []);
+  } catch (error) {
+    console.error("Error deleting food:", error);
+  }
+};
 
   console.log("The token id in the app", tokenId)
   return (
@@ -80,8 +95,8 @@ const App = () => {
         )}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="auth/login" element={<LoginForm onLogin={handleLogin} />} />
+          <Route path="auth/signup" element={<SignUp />} />
           <Route
             path="/foods"
             element={
@@ -109,7 +124,7 @@ const App = () => {
             path="/foods-per-day"
             element={
               <ProtectedRoute>
-                <FoodPerDay tokenId={tokenId} todaysFood={todaysFood} />
+                <FoodPerDay tokenId={tokenId} todaysFood={todaysFood} handleDelete={handleDelete}/>
               </ProtectedRoute>
             }
           />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const FoodPerDay = ({ tokenId }) => {
+const FoodPerDay = ({ tokenId , handleDelete }) => {
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -43,9 +43,10 @@ const FoodPerDay = ({ tokenId }) => {
       {foods.length > 0 ? (
         <>
           <ul>
-            {foods.map(({ food, quantity }, i) => (
-              <li key={i}>
+            {foods.map(({ food, quantity }, index) => (
+              <li key={index}>
                 {food?.name || 'Unknown'} — Quantity: {quantity} — Calories per serving: {food?.calories || 0}
+                <button onClick={() => handleDelete(food._id)}>Delete</button>
               </li>
             ))}
           </ul>
