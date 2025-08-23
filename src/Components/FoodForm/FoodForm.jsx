@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { createFood } from "../../services/foodService";
-
+import { useNavigate } from "react-router"
 
 const FoodForm = ({ setFormIsShown, userId }) => {
   const [formData, setFormData] = useState({
     name: "",
     category: "",
-    serving_qty: "",
+    // serving_qty: "",
     serving_size: "",
     calories: "",
     picture: null
   })
+
+  const navigate = useNavigate(); 
 
 
   const handleChange = (event) => {
@@ -28,13 +30,14 @@ const FoodForm = ({ setFormIsShown, userId }) => {
       const data = {
         name: formData.name,
         category: formData.category,
-        serving_qty: formData.serving_qty,
+        // serving_qty: formData.serving_qty,
         serving_size: formData.serving_size,
         calories: formData.calories,
         userId: userId // Include user ID directly
       };
       const response = await createFood(formData)
       console.log("Food created:", response.data)
+      navigate('/foods')
     } catch (error) {
       console.log(error)
     }
@@ -43,7 +46,7 @@ const FoodForm = ({ setFormIsShown, userId }) => {
 
 
   return (
-    <div className="form">
+<div className="form">
       <h1>Add New Food</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Food Name</label>
@@ -57,7 +60,6 @@ const FoodForm = ({ setFormIsShown, userId }) => {
           required
         />
         <br />
-
 
         <label htmlFor="category">Category</label>
         <br />
@@ -83,12 +85,10 @@ const FoodForm = ({ setFormIsShown, userId }) => {
           <option value="Soups & Sauces">Soups & Sauces</option>
           <option value="Fast Food / Restaurant Food">Fast Food / Restaurant Food</option>
           <option value="Branded Products">Branded Products</option>
-
         </select>
         <br />
 
-
-        <label htmlFor="serving_qty">Serving Quantity</label>
+        {/* <label htmlFor="serving_qty">Serving Quantity</label>
         <br />
         <input
           type="number"
@@ -98,8 +98,7 @@ const FoodForm = ({ setFormIsShown, userId }) => {
           value={formData.serving_qty}
           required
         />
-        <br />
-
+        <br /> */}
 
         <label htmlFor="serving_size">Serving Size</label>
         <br />
@@ -124,7 +123,6 @@ const FoodForm = ({ setFormIsShown, userId }) => {
           required
         />
         <br />
-
 
         <label htmlFor="picture">Picture</label><br />
         <input

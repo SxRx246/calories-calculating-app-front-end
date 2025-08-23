@@ -7,7 +7,7 @@ const UpdateButton = ({setIsFormUpdated, setSelectedFood, food}) => {
     }
   return (
     <div>
-      <button onClick={handleUpdateButton}>Edit</button>
+      <button onClick={handleUpdateButton} className="edit-btn">Edit</button>
     </div>
   )
 }

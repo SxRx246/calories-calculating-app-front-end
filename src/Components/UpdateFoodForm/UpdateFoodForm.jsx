@@ -8,7 +8,7 @@ const UpdateFoodForm = ({ foodId,setIsFormUpdated }) => {
   const [formData, setFormData] = useState({
     name: "",
     category: "",
-    serving_qty: "",
+    // serving_qty: "",
     serving_size: "",
     calories: "",
     picture: null
@@ -24,7 +24,7 @@ const UpdateFoodForm = ({ foodId,setIsFormUpdated }) => {
         setFormData({
           name: food.name || "",
           category: food.category || "",
-          serving_qty: food.serving_qty || "",
+          // serving_qty: food.serving_qty || "",
           serving_size: food.serving_size || "",
           calories: food.calories || "",
           picture: null
@@ -103,7 +103,7 @@ const UpdateFoodForm = ({ foodId,setIsFormUpdated }) => {
           <option value="Branded Products">Branded Products</option>
         </select><br />
 
-        <label htmlFor="serving_qty">Serving Quantity</label><br />
+        {/* <label htmlFor="serving_qty">Serving Quantity</label><br />
         <input
           type="number"
           name="serving_qty"
@@ -111,7 +111,7 @@ const UpdateFoodForm = ({ foodId,setIsFormUpdated }) => {
           onChange={handleChange}
           value={formData.serving_qty}
           required
-        /><br />
+        /><br /> */}
 
         <label htmlFor="serving_size">Serving Size</label><br />
         <input

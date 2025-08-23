@@ -102,7 +102,7 @@ const UserInfoForm = () => {
 
   return (
     <div className="form">
-      <h1>User Information</h1>
+      <h1>Calculating Required Calories</h1>
       <form onSubmit={handleSubmit}>
         <label>Age</label><br />
         <input
@@ -126,38 +126,43 @@ const UserInfoForm = () => {
         </select><br />
 
         <label>Height</label><br />
-        <input
-          type="number"
-          name="value"
-          value={formData.height.value}
-          onChange={(event) => handleNestedChange(event, "height")}
-          required
-        />
-        <select
-          name="unit"
-          value={formData.height.unit}
-          onChange={(event) => handleNestedChange(event, "height")}
-        >
-          <option value="cm">cm</option>
-          <option value="ft">ft</option>
-        </select><br />
-
+        <div className="input-with-unit">
+          <input
+            type="number"
+            name="value"
+            value={formData.height.value}
+            onChange={(event) => handleNestedChange(event, "height")}
+            min="1"
+            required
+          />
+          <select
+            name="unit"
+            value={formData.height.unit}
+            onChange={(event) => handleNestedChange(event, "height")}
+          >
+            <option value="cm">cm</option>
+            <option value="ft">ft</option>
+          </select>
+        </div>
         <label>Weight</label><br />
-        <input
-          type="number"
-          name="value"
-          value={formData.weight.value}
-          onChange={(event) => handleNestedChange(event, "weight")}
-          required
-        />
-        <select
-          name="unit"
-          value={formData.weight.unit}
-          onChange={(event) => handleNestedChange(event, "weight")}
-        >
-          <option value="kg">kg</option>
-          <option value="lb">lb</option>
-        </select><br />
+        <div className="input-with-unit">
+          <input
+            type="number"
+            name="value"
+            value={formData.weight.value}
+            onChange={(event) => handleNestedChange(event, "weight")}
+            min="1"
+            required
+          />
+          <select
+            name="unit"
+            value={formData.weight.unit}
+            onChange={(event) => handleNestedChange(event, "weight")}
+          >
+            <option value="kg">kg</option>
+            <option value="lb">lb</option>
+          </select>
+        </div>
 
         <label>Activity Level</label><br />
         <select
@@ -174,12 +179,12 @@ const UserInfoForm = () => {
           <option value="super_active">Super Active (intense training)</option>
         </select><br />
 
-        <button type="submit">Save Info</button>
+        {/* <button type="submit">Save Info</button> */}
       </form>
 
       {calories && (
-        <div style={{ marginTop: "20px", fontWeight: "bold" }}>
-          Estimated Total Required Calories: {calories} kcal/day
+        <div style={{ marginTop: "20px", fontWeight: "bold", fontSize: "25px" , color:"green"}}>
+              Required Calories: {calories} kcal/day
         </div>
       )}
     </div>

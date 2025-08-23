@@ -13,7 +13,7 @@ const DeleteButton = ({ id, allFoods }) => {
         }
     }
     return (
-        <button onClick={handleDelete}>Delete</button>
+        <button onClick={handleDelete} className="delete-btn">Delete</button>
     )
 }
 

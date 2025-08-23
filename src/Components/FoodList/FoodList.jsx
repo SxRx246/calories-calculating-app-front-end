@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import DeleteButton from './DeleteButton/DeleteButton'
 import UpdateButton from './UpdateButton/UpdateButton'
+import Footer from '../Footer/Footer'
 
 const FoodList = ({ setIsFormUpdated, isFormUpdated, setSelectedFood, foods, setFood, userId, handleAddFood }) => {
 const [quantities, setQuantities] = useState({});
@@ -37,7 +38,7 @@ const [quantities, setQuantities] = useState({});
 
     return (
 
-        <>
+        <div class="foods-header">
             <h1>Foods List</h1>
             <div className='smallContainer'>
                 {
@@ -62,6 +63,7 @@ const [quantities, setQuantities] = useState({});
 
                                     <p>{food.name}</p>
                                     <p>Calories Per Serving: {food.calories}</p>
+                                    <p>Quantity:</p>
                                     <input
                                         type="number"
                                         min="1"
@@ -69,6 +71,7 @@ const [quantities, setQuantities] = useState({});
                                         onChange={(e) => handleQuantityChange(food._id, Number(e.target.value))}
                                         style={{ width: "60px", marginRight: "10px" }}
                                     />
+                                  
                                     <button onClick={() => handleAddFood(food._id, quantities[food._id] || 1 , food.name)}>
                                         Add to Todays List
                                     </button>                                  {
@@ -76,7 +79,7 @@ const [quantities, setQuantities] = useState({});
                                             ?
                                             <>
                                                 < DeleteButton allFoods={allFoods} id={food._id} />
-                                                < UpdateButton allFoods={allFoods} food={food} setIsFormUpdated={setIsFormUpdated} setSelectedFood={setSelectedFood} />
+                                                < UpdateButton allFoods={allFoods} food={food} setIsFormUpdated={setIsFormUpdated} setSelectedFood={setSelectedFood} className="edit-btn"/>
                                             </>
                                             :
                                             null
@@ -94,8 +97,9 @@ const [quantities, setQuantities] = useState({});
 
                 }
             </div>
+            <Footer />
 
-        </>
+        </div>
     )
 }
 
