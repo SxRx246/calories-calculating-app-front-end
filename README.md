@@ -133,6 +133,3 @@ Use the logout button to end your session.
 - Support editing daily quantities with API persistence.
 - Enhance UI/UX with more animations and responsive design.
 
-
-
-If you want, I can help generate a more specific README section for the calorie calculator or help with anything else!
